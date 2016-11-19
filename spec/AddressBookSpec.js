@@ -2,7 +2,7 @@ describe( "AddressBook", function() {
 
   var ab, c;
 
-  beforeEach(function() {
+  beforeEach(function() {   // beforeEach() runs before *each* testcase it()
     ab = new AddressBook(),
     c  = new Contact();
   });
@@ -18,5 +18,20 @@ describe( "AddressBook", function() {
     ab.addContact(c);
     ab.deleteContact(0);
     expect(ab.deleteContact(0)).not.toBeDefined();
+  });
+});
+
+describe("Async Address Book", function() {	// !!! Not sure why it fails when replacing 'Address Book' w/ 'AddressBook'
+  var ab = new AddressBook();
+
+  beforeEach(function(done) {
+    ab.getInitialContacts(function() {    // getInitialContacts() is an *async* function
+      done();                             // *done() signals* to the test framework that the async func call is done
+    });
+  });
+
+  it("should grab initial contacts", function(done) {
+    expect(ab.initialComplete).toBe(true);
+    done();
   });
 });
